@@ -6,7 +6,13 @@ import Lottie from "react-lottie";
 
 import { cn } from "@/lib/utils";
 
-import { BackgroundGradientAnimation } from "./GradientBg";
+import dynamic from "next/dynamic";
+
+// Import BackgroundGradientAnimation with SSR disabled
+const BackgroundGradientAnimation = dynamic(
+  () => import("./GradientBg").then((mod) => mod.BackgroundGradientAnimation),
+  { ssr: false }
+);
 import GridGlobe from "./GridGlobe";
 import animationData from "@/data/confetti.json";
 import MagicButton from "../MagicButton";

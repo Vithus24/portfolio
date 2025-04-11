@@ -42,8 +42,8 @@ export const BackgroundGradientAnimation = ({
   const [isSafari, setIsSafari] = useState(false);
 
   useEffect(() => {
-    // This runs only on the client side
-    if (typeof window !== "undefined" && typeof document !== "undefined") {
+    // Safely set document properties only on the client side
+    const setDocumentProperties = () => {
       document.body.style.setProperty(
         "--gradient-background-start",
         gradientBackgroundStart
@@ -62,6 +62,11 @@ export const BackgroundGradientAnimation = ({
       document.body.style.setProperty("--blending-value", blendingValue);
 
       setIsSafari(/^((?!chrome|android).)*safari/i.test(navigator.userAgent));
+    };
+
+    // Only run on client side
+    if (typeof window !== "undefined") {
+      setDocumentProperties();
     }
   }, [
     gradientBackgroundStart,
@@ -77,6 +82,8 @@ export const BackgroundGradientAnimation = ({
   ]);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const move = () => {
       if (!interactiveRef.current) return;
       setCurX((prevX) => prevX + (tgX - prevX) / 20);
@@ -85,6 +92,7 @@ export const BackgroundGradientAnimation = ({
         curX
       )}px, ${Math.round(curY)}px)`;
     };
+
     move();
   }, [tgX, tgY, curX, curY]);
 
