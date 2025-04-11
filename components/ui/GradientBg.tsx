@@ -65,9 +65,10 @@ export const BackgroundGradientAnimation = ({
     };
 
     // Only run on client side
-    if (typeof window !== "undefined") {
-      setDocumentProperties();
-    }
+   if (typeof window !== "undefined" && typeof document !== "undefined") {
+     setDocumentProperties();
+   }
+
   }, [
     gradientBackgroundStart,
     gradientBackgroundEnd,
