@@ -41,46 +41,48 @@ export const BackgroundGradientAnimation = ({
   const [tgY, setTgY] = useState(0);
   const [isSafari, setIsSafari] = useState(false);
 
-  useEffect(() => {
-    // Safely set document properties only on the client side
-    const setDocumentProperties = () => {
-      document.body.style.setProperty(
-        "--gradient-background-start",
-        gradientBackgroundStart
-      );
-      document.body.style.setProperty(
-        "--gradient-background-end",
-        gradientBackgroundEnd
-      );
-      document.body.style.setProperty("--first-color", firstColor);
-      document.body.style.setProperty("--second-color", secondColor);
-      document.body.style.setProperty("--third-color", thirdColor);
-      document.body.style.setProperty("--fourth-color", fourthColor);
-      document.body.style.setProperty("--fifth-color", fifthColor);
-      document.body.style.setProperty("--pointer-color", pointerColor);
-      document.body.style.setProperty("--size", size);
-      document.body.style.setProperty("--blending-value", blendingValue);
+ useEffect(() => {
+   const setDocumentProperties = () => {
+     if (typeof document !== "undefined") {
+       document.body.style.setProperty(
+         "--gradient-background-start",
+         gradientBackgroundStart
+       );
+       document.body.style.setProperty(
+         "--gradient-background-end",
+         gradientBackgroundEnd
+       );
+       document.body.style.setProperty("--first-color", firstColor);
+       document.body.style.setProperty("--second-color", secondColor);
+       document.body.style.setProperty("--third-color", thirdColor);
+       document.body.style.setProperty("--fourth-color", fourthColor);
+       document.body.style.setProperty("--fifth-color", fifthColor);
+       document.body.style.setProperty("--pointer-color", pointerColor);
+       document.body.style.setProperty("--size", size);
+       document.body.style.setProperty("--blending-value", blendingValue);
+     }
 
-      setIsSafari(/^((?!chrome|android).)*safari/i.test(navigator.userAgent));
-    };
+     if (typeof navigator !== "undefined") {
+       setIsSafari(/^((?!chrome|android).)*safari/i.test(navigator.userAgent));
+     }
+   };
 
-    // Only run on client side
-   if (typeof window !== "undefined" && typeof document !== "undefined") {
+   if (typeof window !== "undefined") {
      setDocumentProperties();
    }
+ }, [
+   gradientBackgroundStart,
+   gradientBackgroundEnd,
+   firstColor,
+   secondColor,
+   thirdColor,
+   fourthColor,
+   fifthColor,
+   pointerColor,
+   size,
+   blendingValue,
+ ]);
 
-  }, [
-    gradientBackgroundStart,
-    gradientBackgroundEnd,
-    firstColor,
-    secondColor,
-    thirdColor,
-    fourthColor,
-    fifthColor,
-    pointerColor,
-    size,
-    blendingValue,
-  ]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
